@@ -1,0 +1,17 @@
+version: "3"
+services:
+  monero-wallet-rpc:
+    build:
+      context: docker/wallet_rpc
+    ports:
+      - "18082:18082"
+    volumes:
+      - ./monero:/wallets
+  nats:
+    image: docker.io/nats:latest
+    command: -c /etc/nats/nats-server.conf
+    volumes:
+      - "./nats/nats-server.conf:/etc/nats/nats-server.conf"
+      #- "./resolver.conf:/etc/nats/resolver.conf"
+    ports:
+      - "4222:4222"
