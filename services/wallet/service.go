@@ -1,19 +1,19 @@
-package lightwallet
+package wallet
 
 import (
 	"context"
 	"github.com/dnbsd/bun.go"
 	"github.com/dnbsd/jsonrpc"
-	"github.com/dnbsd/xmrmux/services/lightwallet/modules"
+	"github.com/dnbsd/xmrmux/services/wallet/modules"
 	"github.com/nats-io/nats.go"
 	"gitlab.com/moneropay/go-monero/walletrpc"
 	"log/slog"
-	"strings"
 )
 
 type Arguments struct {
 	Logger          *slog.Logger
 	Name            string
+	Subject         string
 	Servers         []string
 	WalletRpcServer string
 }
@@ -55,18 +55,20 @@ func (s *Service) Start(ctx context.Context) error {
 		s.args.Logger.Info("reconnected to nats server")
 	}
 	b.DisconnectedHandler = func(conn *nats.Conn, err error) {
+		if err != nil {
+			s.args.Logger.Error("disconnected from nats server", "error", err)
+			return
+		}
 		s.args.Logger.Info("disconnected from nats server")
 	}
-	b.Subscribe(strings.Join([]string{s.args.Name, "rpc"}, "."), s.handleRpc)
+	b.Subscribe(s.args.Subject, s.handleRpc)
 	return b.Start(ctx)
 }
 
 func (s *Service) handleRpc(c *bun.Context) error {
 	defer func() {
 		err := recover()
-		if err != nil {
-			s.args.Logger.Error("rpc handler error", "err", err)
-		}
+		s.args.Logger.Error("rpc handler error", "err", err)
 	}()
 
 	var req jsonrpc.Request

@@ -1,4 +1,5 @@
 # Monero Wallet Multiplexer
+# MoneroPayServer
 
 This is a description of an experimental software that I wish to build in the course of [MoneroKon 2024 Hackathon]().
 
@@ -14,15 +15,15 @@ NOTES:
 
 ## JSON-RPC API
 
-### Light wallet API
+### Wallet API
 
 #### Requests
 
 ##### wallet.init
+##### wallet.backup
+##### wallet.restore
 ##### wallet.listAccounts
 ##### wallet.setDaemon
-##### wallet.restore
-##### wallet.backup
 ##### wallet.account.create
 ##### wallet.account.hide
 ##### wallet.account.transfer
@@ -31,15 +32,27 @@ NOTES:
 ##### wallet.account.listAddresses
 ##### wallet.account.listTransactions
 
-#### Notifications
+##### Notifications
 
-##### wallet.create
-##### wallet.delete
 ##### wallet.transfer
 
 ## NATS subjects
 
+## Service discovery
+
+Client should send a JSON-RPC request `$rpc.discover` to a wildcard subject `wallet.*.rpc`.
+
+## Wallet service
+
 ```
-{{serviceID}}.rpc
-{{serviceID}}.notifications.wallets.{{walletID}}
+wallet.{{serviceID}}.rpc
+wallet.{{serviceID}}.notifications.wallets.{{walletID}}
 ```
+
+## Client workflow
+
+1. Connect a wallet server by prompting a user for a server URL, i.e. https://nats.example.com/.
+2. Discover wallet services by sending a request `json-rpc:$rpc.discover` to `nats:wallets.*.rpc` subjects.
+3. Wait and collect responses from the wallet services and present them to a user on-screen. If there are no wallet services, display an error.
+4. Get a list of existing accounts from each wallet service by sending `json-rpc:wallet.listAccounts` requests to `nats:wallet.{id}.rpc` subject.
+5. Let a user choose which account from which wallet service to use. If there are no accounts, allow a user to create one.

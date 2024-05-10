@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/dnbsd/jsonrpc"
-	"github.com/dnbsd/xmrmux/services/lightwallet/modules"
+	"github.com/dnbsd/xmrmux/services/wallet/modules"
 	"gitlab.com/moneropay/go-monero/walletrpc"
 	"os"
 	"strconv"

@@ -2,19 +2,24 @@ package main
 
 import (
 	"context"
-	"github.com/dnbsd/xmrmux/services/lightwallet"
+	"github.com/dnbsd/xmrmux/services/wallet"
 	"log/slog"
 	"os"
+	"os/signal"
 )
 
 func main() {
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
+	defer cancel()
+
 	logger := slog.New(slog.NewJSONHandler(os.Stderr, &slog.HandlerOptions{
 		AddSource: true,
 		Level:     slog.LevelDebug,
 	}))
-	s, err := lightwallet.New(lightwallet.Arguments{
+	s, err := wallet.New(wallet.Arguments{
 		Logger:          logger,
-		Name:            "lightwallet-test",
+		Name:            "wallet",
+		Subject:         "wallet.1.rpc",
 		Servers:         []string{"localhost"},
 		WalletRpcServer: "http://localhost:18082/json_rpc",
 	})
@@ -22,7 +27,7 @@ func main() {
 		panic(err)
 	}
 
-	err = s.Start(context.Background())
+	err = s.Start(ctx)
 	if err != nil {
 		panic(err)
 	}

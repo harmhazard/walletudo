@@ -2,7 +2,7 @@ package wallet
 
 import (
 	"github.com/dnbsd/jsonrpc"
-	"github.com/dnbsd/xmrmux/services/lightwallet/modules/wallet/modules/account"
+	"github.com/dnbsd/xmrmux/services/wallet/modules/wallet/modules/account"
 	"gitlab.com/moneropay/go-monero/walletrpc"
 )
 
@@ -109,13 +109,13 @@ func (m *module) ListAccounts(c *jsonrpc.Context) (any, error) {
 	}
 
 	var res []ListResponse
-	for i, account := range resp.SubaddressAccounts {
+	for i, acc := range resp.SubaddressAccounts {
 		// TODO: skip Primary account (i=0)
 		res = append(res, ListResponse{
 			// TODO: there's a bug in walletrpc, account.AddressLabel is always 0
 			ID:      uint64(i),
-			Label:   account.Label,
-			Balance: account.Balance,
+			Label:   acc.Label,
+			Balance: acc.Balance,
 		})
 	}
 
