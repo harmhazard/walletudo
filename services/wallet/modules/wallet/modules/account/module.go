@@ -36,6 +36,26 @@ type module struct {
 	client *walletrpc.Client
 }
 
+type CreateRequest struct {
+	Label string
+}
+
+func NewCreateRequest(params jsonrpc.Object) (CreateRequest, error) {
+	label, err := params.String("label")
+	if err != nil {
+		return CreateRequest{}, err
+	}
+
+	if label == "" {
+		err := jsonrpc.NewErrorParamObjectValue("label", "empty value")
+		return CreateRequest{}, err
+	}
+
+	return CreateRequest{
+		Label: label,
+	}, nil
+}
+
 type CreateResponse struct {
 	AccountID uint64 `json:"accountID"`
 }
@@ -46,17 +66,13 @@ func (m *module) Create(c *jsonrpc.Context) (any, error) {
 		return c.Error(err)
 	}
 
-	// TODO: !!!!!!!!!!!!!!!!!
-	// TODO: validate params!
-	// TODO: !!!!!!!!!!!!!!!!!
-
-	label, err := params.String("label")
+	req, err := NewCreateRequest(params)
 	if err != nil {
 		return c.Error(err)
 	}
 
 	resp, err := m.client.CreateAccount(c.Context(), &walletrpc.CreateAccountRequest{
-		Label: label,
+		Label: req.Label,
 	})
 	if err != nil {
 		// TODO: do not return monero rpc errors to the user!
@@ -66,6 +82,27 @@ func (m *module) Create(c *jsonrpc.Context) (any, error) {
 	return c.Result(CreateResponse{
 		AccountID: resp.AccountIndex,
 	})
+}
+
+type ListAddressesRequest struct {
+	AccountID uint64
+}
+
+func NewListAddressesRequest(params jsonrpc.Object) (ListAddressesRequest, error) {
+	accountID, err := params.Number("accountID")
+	if err != nil {
+		return ListAddressesRequest{}, err
+	}
+
+	if accountID.Int() <= 0 {
+		err := jsonrpc.NewErrorParamObjectValue("accountID", "must be greater than 0")
+		return ListAddressesRequest{}, err
+	}
+
+	return ListAddressesRequest{
+		// TODO: replace with Uint64 method
+		AccountID: uint64(accountID.Uint()),
+	}, nil
 }
 
 type ListAddressesResponse struct {
@@ -81,20 +118,13 @@ func (m *module) ListAddresses(c *jsonrpc.Context) (any, error) {
 		return c.Error(err)
 	}
 
-	// TODO: !!!!!!!!!!!!!!!!!
-	// TODO: validate params!
-	// TODO: !!!!!!!!!!!!!!!!!
-
-	// TODO: accountID must be greater than 0!!!
-
-	accountID, err := params.Number("accountID")
+	req, err := NewListAddressesRequest(params)
 	if err != nil {
 		return c.Error(err)
 	}
 
 	resp, err := m.client.GetAddress(c.Context(), &walletrpc.GetAddressRequest{
-		// TODO: replace with Uint64 method
-		AccountIndex: uint64(accountID.Uint()),
+		AccountIndex: req.AccountID,
 	})
 	if err != nil {
 		// TODO: do not return monero rpc errors to the user!
@@ -114,6 +144,27 @@ func (m *module) ListAddresses(c *jsonrpc.Context) (any, error) {
 	return c.Result(res)
 }
 
+type CreateAddressRequest struct {
+	AccountID uint64
+}
+
+func NewCreateAddressRequest(params jsonrpc.Object) (CreateAddressRequest, error) {
+	accountID, err := params.Number("accountID")
+	if err != nil {
+		return CreateAddressRequest{}, err
+	}
+
+	if accountID.Int() <= 0 {
+		err := jsonrpc.NewErrorParamObjectValue("accountID", "must be greater than 0")
+		return CreateAddressRequest{}, err
+	}
+
+	return CreateAddressRequest{
+		// TODO: replace with Uint64 method
+		AccountID: uint64(accountID.Uint()),
+	}, nil
+}
+
 type CreateAddressResponse struct {
 	Address string `json:"address"`
 }
@@ -124,20 +175,13 @@ func (m *module) CreateAddress(c *jsonrpc.Context) (any, error) {
 		return c.Error(err)
 	}
 
-	// TODO: !!!!!!!!!!!!!!!!!
-	// TODO: validate params!
-	// TODO: !!!!!!!!!!!!!!!!!
-
-	// TODO: accountID must be greater than 0!!!
-
-	accountID, err := params.Number("accountID")
+	req, err := NewCreateAddressRequest(params)
 	if err != nil {
 		return c.Error(err)
 	}
 
 	resp, err := m.client.CreateAddress(c.Context(), &walletrpc.CreateAddressRequest{
-		// TODO: replace with Uint64 method
-		AccountIndex: uint64(accountID.Uint()),
+		AccountIndex: req.AccountID,
 	})
 	if err != nil {
 		// TODO: do not return monero rpc errors to the user!
@@ -147,6 +191,27 @@ func (m *module) CreateAddress(c *jsonrpc.Context) (any, error) {
 	return c.Result(CreateAddressResponse{
 		Address: resp.Address,
 	})
+}
+
+type ListTransactionsRequest struct {
+	AccountID uint64
+}
+
+func NewListTransactionsRequest(params jsonrpc.Object) (ListTransactionsRequest, error) {
+	accountID, err := params.Number("accountID")
+	if err != nil {
+		return ListTransactionsRequest{}, err
+	}
+
+	if accountID.Int() <= 0 {
+		err := jsonrpc.NewErrorParamObjectValue("accountID", "must be greater than 0")
+		return ListTransactionsRequest{}, err
+	}
+
+	return ListTransactionsRequest{
+		// TODO: replace with Uint64 method
+		AccountID: uint64(accountID.Uint()),
+	}, nil
 }
 
 type ListTransactionsResponse struct {
@@ -174,23 +239,18 @@ func (m *module) ListTransactions(c *jsonrpc.Context) (any, error) {
 		return c.Error(err)
 	}
 
-	// TODO: !!!!!!!!!!!!!!!!!
-	// TODO: validate params!
-	// TODO: !!!!!!!!!!!!!!!!!
-
-	accountID, err := params.Number("accountID")
+	req, err := NewListTransactionsRequest(params)
 	if err != nil {
 		return c.Error(err)
 	}
 
 	resp, err := m.client.GetTransfers(c.Context(), &walletrpc.GetTransfersRequest{
-		In:      true,
-		Out:     true,
-		Pending: true,
-		Failed:  true,
-		Pool:    true,
-		// TODO: replace with Uint64 method
-		AccountIndex: uint64(accountID.Uint()),
+		In:           true,
+		Out:          true,
+		Pending:      true,
+		Failed:       true,
+		Pool:         true,
+		AccountIndex: req.AccountID,
 	})
 	if err != nil {
 		// TODO: do not return monero rpc errors to the user!

@@ -36,27 +36,45 @@ type module struct {
 	client *walletrpc.Client
 }
 
+type InitRequest struct {
+	Filename string
+}
+
+func NewInitRequest(params jsonrpc.Object) (InitRequest, error) {
+	filename, err := params.String("filename")
+	if err != nil {
+		return InitRequest{}, err
+	}
+
+	if filename == "" {
+		err := jsonrpc.NewErrorParamObjectValue("filename", "empty value")
+		return InitRequest{}, err
+	}
+
+	return InitRequest{
+		Filename: filename,
+	}, nil
+}
+
+type InitResponse struct{}
+
 func (m *module) Init(c *jsonrpc.Context) (any, error) {
 	params, err := c.ParamsObject()
 	if err != nil {
 		return c.Error(err)
 	}
 
-	// TODO: !!!!!!!!!!!!!!!!!
-	// TODO: validate params!
-	// TODO: !!!!!!!!!!!!!!!!!
-
-	filename, err := params.String("filename")
+	req, err := NewInitRequest(params)
 	if err != nil {
 		return c.Error(err)
 	}
 
 	err = m.client.OpenWallet(c.Context(), &walletrpc.OpenWalletRequest{
-		Filename: filename,
+		Filename: req.Filename,
 	})
 	if err != nil {
 		err = m.client.CreateWallet(c.Context(), &walletrpc.CreateWalletRequest{
-			Filename: filename,
+			Filename: req.Filename,
 			Language: "English",
 		})
 		if err != nil {
@@ -65,8 +83,30 @@ func (m *module) Init(c *jsonrpc.Context) (any, error) {
 		}
 	}
 
-	return c.Result(struct{}{})
+	return c.Result(InitResponse{})
 }
+
+type SetDaemonRequest struct {
+	Address string
+}
+
+func NewSetDaemonRequest(params jsonrpc.Object) (SetDaemonRequest, error) {
+	address, err := params.String("address")
+	if err != nil {
+		return SetDaemonRequest{}, err
+	}
+
+	if address == "" {
+		err := jsonrpc.NewErrorParamObjectValue("address", "empty value")
+		return SetDaemonRequest{}, err
+	}
+
+	return SetDaemonRequest{
+		Address: address,
+	}, nil
+}
+
+type SetDaemonResponse struct{}
 
 func (m *module) SetDaemon(c *jsonrpc.Context) (any, error) {
 	params, err := c.ParamsObject()
@@ -74,17 +114,13 @@ func (m *module) SetDaemon(c *jsonrpc.Context) (any, error) {
 		return c.Error(err)
 	}
 
-	// TODO: !!!!!!!!!!!!!!!!!
-	// TODO: validate params!
-	// TODO: !!!!!!!!!!!!!!!!!
-
-	address, err := params.String("address")
+	req, err := NewSetDaemonRequest(params)
 	if err != nil {
 		return c.Error(err)
 	}
 
 	err = m.client.SetDaemon(c.Context(), &walletrpc.SetDaemonRequest{
-		Address: address,
+		Address: req.Address,
 		Trusted: false,
 	})
 	if err != nil {
@@ -92,7 +128,7 @@ func (m *module) SetDaemon(c *jsonrpc.Context) (any, error) {
 		return c.Error(err)
 	}
 
-	return c.Result(struct{}{})
+	return c.Result(SetDaemonResponse{})
 }
 
 type ListResponse struct {
