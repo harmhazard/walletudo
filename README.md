@@ -1,5 +1,4 @@
-# Monero Wallet Multiplexer
-# MoneroPayServer
+# Walletudo
 
 This is a description of an experimental software that I wish to build in the course of [MoneroKon 2024 Hackathon]().
 
@@ -14,6 +13,31 @@ NOTES:
 - invoice API should send notification if the invoice has been paid.
 
 ## JSON-RPC API
+
+### Auth API
+
+Should use `Ed25519` aka `EdDSA`. To authenticate the wallet service issues a random challenge, which must be signed by the client with their private key.
+If the key is known, the wallet service issues a temporary JWT token signed with service's private key. The JWT token contains an object with the permissions.
+The token is submitted as a header in NATS message.
+
+#### Requests
+
+##### auth.new
+
+Method generates a new authentication challenge. The field `challenge` contains a random string which the client must
+sign with their private key. The client must call `auth.verify` method and pass the signed challenge as a parameter.
+
+##### auth.verify
+
+Method verifies the signed challenge string.
+
+##### auth.invite
+
+Method generates a temporary token which grants 
+
+##### auth.keys.add
+##### auth.keys.modify
+##### auth.keys.delete
 
 ### Wallet API
 
@@ -32,7 +56,7 @@ NOTES:
 ##### wallet.account.listAddresses
 ##### wallet.account.listTransactions
 
-##### Notifications
+#### Notifications
 
 ##### wallet.transfer
 
