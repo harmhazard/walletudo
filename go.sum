@@ -6,6 +6,8 @@ github.com/dnbsd/bun.go v0.3.1 h1:SNGV5FhTQ/YuJWjMhIhS+LvCaff7wPXgq763iRcx2CU=
 github.com/dnbsd/bun.go v0.3.1/go.mod h1:h9py5BeccT7UYA6f8HZcNxjd+xU6Pk6GemQSf6tjkpA=
 github.com/dnbsd/bun.go v0.3.2 h1:/qfQ29q/4x3bj0Y9MyUDuNmSt7uBVYCNG3kV5qDh+lc=
 github.com/dnbsd/bun.go v0.3.2/go.mod h1:h9py5BeccT7UYA6f8HZcNxjd+xU6Pk6GemQSf6tjkpA=
+github.com/dnbsd/bun.go v0.3.3 h1:uhr0i5KaFbU1rJ5XNg5r0o6M29dVCKt88dzP2H+ObPQ=
+github.com/dnbsd/bun.go v0.3.3/go.mod h1:h9py5BeccT7UYA6f8HZcNxjd+xU6Pk6GemQSf6tjkpA=
 github.com/dnbsd/jsonrpc v0.0.0-20240502190717-3f8641201df6 h1:Se2EXeHnvURd5v+Jn2yWmRQ7sr5clV4kNq5ZWjjVB7Q=
 github.com/dnbsd/jsonrpc v0.0.0-20240502190717-3f8641201df6/go.mod h1:UXoO2jfOM0lRIwKLBpzX//1M2NQayaTYCnSCc05itj4=
 github.com/dnbsd/jsonrpc v0.0.0-20240514052941-2c9157c81f6f h1:JA3dMpFUaP3BJHxSMkd6bPGW/pWiNlndjXfRsPJEDHE=
@@ -26,6 +28,8 @@ gitlab.com/moneropay/go-monero v1.1.1 h1:w/OEQ4INWXjRjkZ8ExBJRK0/stYjHQxuYoEGNKg
 gitlab.com/moneropay/go-monero v1.1.1/go.mod h1:k7fElrhjex1ktCy45ebcgz66oGBeOtciBZA405s3Oz0=
 golang.org/x/crypto v0.19.0 h1:ENy+Az/9Y1vSrlrvBSyna3PITt4tiZLf7sgCjZBX7Wo=
 golang.org/x/crypto v0.19.0/go.mod h1:Iy9bg/ha4yyC70EfRS8jz+B6ybOBKMaSxLj6P6oBDfU=
+golang.org/x/sync v0.7.0 h1:YsImfSBoP9QPYL0xyKJPq0gcaJdG3rInoqxTWbfQu9M=
+golang.org/x/sync v0.7.0/go.mod h1:Czt+wKu1gCyEFDUtn0jG5QVvpJ6rzVqr5aXyt9drQfk=
 golang.org/x/sys v0.17.0 h1:25cE3gD+tdBA7lp7QfhuV+rJiE9YXTcS3VG1SqssI/Y=
 golang.org/x/sys v0.17.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
