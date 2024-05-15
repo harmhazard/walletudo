@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"flag"
 	"github.com/dnbsd/xmrmux/services/wallet"
 	"log/slog"
 	"os"
@@ -11,11 +10,6 @@ import (
 
 func main() {
 	conf := NewConfig()
-	flag.Func("nats-server", "", conf.SetNatsServer)
-	flag.Func("nats-rpc-subject", "", conf.SetNatsRpcSubject)
-	flag.Func("wallet-rpc-server", "", conf.SetWalletRpcServer)
-	flag.Func("log-level", "", conf.SetLogLevel)
-	flag.Parse()
 
 	logger := slog.New(slog.NewJSONHandler(os.Stderr, &slog.HandlerOptions{
 		AddSource: conf.LogLevel() == slog.LevelDebug,
