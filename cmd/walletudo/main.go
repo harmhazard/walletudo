@@ -10,16 +10,10 @@ import (
 
 func main() {
 	conf := NewConfig()
-
 	logger := slog.New(slog.NewJSONHandler(os.Stderr, &slog.HandlerOptions{
 		AddSource: conf.LogLevel() == slog.LevelDebug,
 		Level:     conf.LogLevel(),
 	}))
-
-	logger.Debug("using configuration", slog.Any("conf", conf))
-
-	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
-	defer cancel()
 
 	s := New(Arguments{
 		Logger: logger.With(slog.String("service", "walletudo")),
@@ -32,6 +26,8 @@ func main() {
 		},
 	})
 
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
+	defer cancel()
 	err := s.Start(ctx)
 	if err != nil {
 		os.Exit(1)
