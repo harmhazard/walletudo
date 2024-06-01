@@ -8,13 +8,13 @@ Create a new wallet or open an existing.
 
 #### Parameters
 
-| Name     | Required | Description                                       |
-|----------|----------|---------------------------------------------------|
-| `filename` | yes        | Filename of the wallet that will be created/open. |
+| Name        | Type    | Required                                          | Description                                       |
+|-------------|---------|---------------------------------------------------|---------------------------------------------------|
+| `filename` | `string` | yes        | Filename of the wallet that will be created/open. |
 
 #### Returns
 
-The method returns empty result if the call is successful.
+Empty Object.
 
 #### Errors
 
@@ -45,11 +45,11 @@ The method takes no parameters.
 
 Array of Objects:
 
-| Name      | Description      |
-|-----------|------------------|
-| `id`      | Account ID.      |
-| `label`   | Account label.   |
-| `balance` | Account balance. |
+| Name       | Type                       | Description      |
+|-------------|----------------------------|------------------|
+| `id`        | `integer`                  | Account ID.      |
+| `label`     | `string`                   | Account label.   |
+| `balance`   | `integer` | Account balance. |
 
 #### Example
 
@@ -61,6 +61,27 @@ $ nats -s "wss://user:password@example.com" request "wallets.demo1.rpc" '{"jsonr
 ```
 
 ### wallet.setDaemon
+
+Connects the wallet to Monero Daemon (monerod) on provided address.
+
+#### Parameters
+
+| Name      | Type    | Required                                          | Description               |
+|-----------|---------|---------------------------------------------------|---------------------------|
+| `address` | `string` | yes        | Address of Monero daemon. |
+
+#### Returns
+
+Empty Object.
+
+#### Example
+
+```shell
+$ nats -s "wss://user:password@example.com" request "wallets.demo1.rpc" '{"jsonrpc":"2.0","id":"zzlDZNRdMTqs","method":"wallet.setDaemon","params":{"address":"http://xmr-node.cakewallet.com:18081"}}'
+12:15:54 Sending request on "wallets.demo1.rpc"
+12:15:56 Received with rtt 1.575149614s
+{"jsonrpc":"2.0","id":"zzlDZNRdMTqs","result":{}}
+```
 
 ### wallet.account.create
 
