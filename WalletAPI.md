@@ -62,7 +62,7 @@ $ nats -s "wss://user:password@example.com" request "wallets.demo1.rpc" '{"jsonr
 
 ### wallet.setDaemon
 
-Connects the wallet to Monero Daemon (monerod) on provided address.
+Connect the wallet to Monero Daemon (monerod) available on provided address.
 
 #### Parameters
 
@@ -85,13 +85,63 @@ $ nats -s "wss://user:password@example.com" request "wallets.demo1.rpc" '{"jsonr
 
 ### wallet.account.create
 
-### wallet.account.hide
+Create a new wallet account.
 
-### wallet.account.transfer
+#### Parameters
 
-### wallet.account.getBalance
+| Name    | Type    | Required                                          | Description    |
+|---------|---------|---------------------------------------------------|----------------|
+| `label` | `string` | yes        | Account label. |
+
+#### Returns
+
+Object:
+
+| Name        | Type                       | Description      |
+|-------------|----------------------------|------------------|
+| `accountID` | `integer`                  | Account ID.      |
+
+#### Example
+
+```shell
+$ nats -s "wss://user:password@example.com" request "wallets.demo1.rpc" '{"jsonrpc":"2.0","id":"zzlDZNRdMTqs","method":"wallet.account.create","params":{"label":"Test"}}' 
+13:00:52 Sending request on "wallets.demo1.rpc"
+13:00:53 Received with rtt 715.763102ms
+{"jsonrpc":"2.0","id":"zzlDZNRdMTqs","result":{"accountID":7}}
+```
+
+### wallet.account.hide [NOT IMPLEMENTED]
+
+### wallet.account.transfer [NOT IMPLEMENTED]
+
+### wallet.account.getBalance [NOT IMPLEMENTED]
 
 ### wallet.account.createAddress
+
+Create a new address associated with a specified account.
+
+#### Parameters
+
+| Name        | Type      | Required                                          | Description                                           |
+|-------------|-----------|---------------------------------------------------|-------------------------------------------------------|
+| `accountID` | `integer` | yes        | Account ID for which a new address will be generated. |
+
+#### Returns
+
+Object:
+
+| Name      | Type     | Description                      |
+|-----------|----------|----------------------------------|
+| `address` | `string` | Newly generated account address. |
+
+#### Example
+
+```shell
+$ nats -s "wss://user:password@example.com" request "wallets.demo1.rpc" '{"jsonrpc":"2.0","id":"zzlDZNRdMTqs","method":"wallet.account.createAddress","params":{"accountID":7}}' 
+13:09:55 Sending request on "wallets.demo1.rpc"
+13:09:55 Received with rtt 127.304505ms
+{"jsonrpc":"2.0","id":"zzlDZNRdMTqs","result":{"address":"89tnHwwTN3e6ffbG31C9tUdFhWFjZ5SX6XMz59j5BYmxaPfyXb2qanoSqpLeBrvPRSZT2kwCVTU2hentk7y9jBmKSt9HGVu"}}
+```
 
 ### wallet.account.listAddresses
 
