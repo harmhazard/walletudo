@@ -118,7 +118,7 @@ $ nats -s "wss://user:password@example.com" request "wallets.demo1.rpc" '{"jsonr
 
 ### wallet.account.createAddress
 
-Create a new address associated with a specified account.
+Create a new address associated with a provided account.
 
 #### Parameters
 
@@ -145,8 +145,59 @@ $ nats -s "wss://user:password@example.com" request "wallets.demo1.rpc" '{"jsonr
 
 ### wallet.account.listAddresses
 
+List addresses for a provided account.
+
+#### Parameters
+
+| Name        | Type      | Required                                          | Description |
+|-------------|-----------|---------------------------------------------------|-------------|
+| `accountID` | `integer` | yes        | Account ID. |
+
+#### Returns
+
+Array of Objects:
+
+| Name      | Type      | Description                                                          |
+|-----------|-----------|----------------------------------------------------------------------|
+| `address` | `string`  | Address.                                                             |
+| `label`   | `string`  | Address label.                                                       |
+| `balance` | `integer` | Address balance.                                                     |
+| `used`    | `boolean` | Set to `true` if the address has received a transaction. |
+
+#### Example
+
+```shell
+$ nats -s "wss://user:password@example.com" request "wallets.demo1.rpc" '{"jsonrpc":"2.0","id":"zzlDZNRdMTqs","method":"wallet.account.listAddresses","params":{"accountID":7}}'
+13:21:08 Sending request on "wallets.demo1.rpc"
+13:21:08 Received with rtt 56.078476ms
+{"jsonrpc":"2.0","id":"zzlDZNRdMTqs","result":[{"address":"87LLdzd9mNUCjwCTpv8KVKNXv82nbi5kpJ2ujhdQmBQvDeVQfPbM1v5WdcxgCmhM1rF3C7a8tkLe7CoAH8U7KfHA17VGAak","label":"Test","balance":0,"used":false},{"address":"89tnHwwTN3e6ffbG31C9tUdFhWFjZ5SX6XMz59j5BYmxaPfyXb2qanoSqpLeBrvPRSZT2kwCVTU2hentk7y9jBmKSt9HGVu","label":"","balance":0,"used":false}]}
+```
+
 ### wallet.account.listTransactions
+
+List transactions for a provided account.
+
+#### Parameters
+
+| Name        | Type      | Required                                          | Description |
+|-------------|-----------|---------------------------------------------------|-------------|
+| `accountID` | `integer` | yes        | Account ID. |
+
+#### Returns
+
+TODO
+
+#### Example
+
+```shell
+$ nats -s "wss://user:password@example.com" request "wallets.demo1.rpc" '{"jsonrpc":"2.0","id":"zzlDZNRdMTqs","method":"wallet.account.listTransactions","params":{"accountID":7}}'
+13:31:37 Sending request on "wallets.demo1.rpc"
+13:31:37 Received with rtt 84.392311ms
+{"jsonrpc":"2.0","id":"zzlDZNRdMTqs","result":{"incoming":[],"outgoing":[],"pending":[],"failed":[],"pool":[]}}
+```
 
 ## Notifications
 
 ### wallet.transfer
+
+TODO
