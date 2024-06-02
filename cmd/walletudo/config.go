@@ -31,22 +31,22 @@ func (c *Config) Flags() []Flag {
 	return []Flag{
 		{
 			Name:  "nats-server",
-			Usage: "",
+			Usage: "=<URL>\t\tURL of NATS server",
 			Func:  c.setNatsServer,
 		},
 		{
 			Name:  "nats-rpc-subject",
-			Usage: "",
+			Usage: "=<NAME>\tname of NATS JSON-RPC subject",
 			Func:  c.setNatsRpcSubject,
 		},
 		{
 			Name:  "wallet-rpc-server",
-			Usage: "",
+			Usage: "=<URL>\tURL of Monero Wallet JSON-RPC server",
 			Func:  c.setWalletRpcServer,
 		},
 		{
 			Name:  "log-level",
-			Usage: "",
+			Usage: "=<LEVEL>\t\tlog verbosity level",
 			Func:  c.setLogLevel,
 		},
 	}
@@ -109,9 +109,9 @@ func (c *Config) LogLevel() slog.Level {
 func (c *Config) Usage() {
 	fmt.Printf("Usage: %s <OPTION>\n", os.Args[0])
 	for _, flg := range c.Flags() {
-		fmt.Printf("  --%s  %s\n", flg.Name, flg.Usage)
+		fmt.Printf("  --%s%s\n", flg.Name, flg.Usage)
 	}
-	fmt.Printf("  -h, --help  print this help message\n")
+	fmt.Printf("  -h, --help\t\t\tprint this help message\n")
 }
 
 func NewConfig() *Config {
