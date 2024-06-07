@@ -114,7 +114,33 @@ $ nats -s "wss://user:password@example.com" request "wallets.demo1.rpc" '{"jsonr
 
 ### wallet.account.transfer [NOT IMPLEMENTED]
 
-### wallet.account.getBalance [NOT IMPLEMENTED]
+### wallet.account.getBalance
+
+Get account balance.
+
+#### Parameters
+
+| Name        | Type      | Required                                          | Description                              |
+|-------------|-----------|---------------------------------------------------|------------------------------------------|
+| `accountID` | `integer` | yes        | Account ID for which to get the balance. |
+
+#### Returns
+
+Object:
+
+| Name               | Type      | Description                                       |
+|--------------------|-----------|---------------------------------------------------|
+| `balance`          | `integer` | Account balance including any unspendable inputs. |
+| `unlocked_balance` | `integer` | Spendable account balance.                        |
+
+#### Example
+
+```shell
+$ nats -s "wss://user:password@example.com" request "wallets.demo1.rpc" '{"jsonrpc":"2.0","id":"zzlDZNRdMTqs","method":"wallet.account.getBalance","params":{"accountID":7}}' 
+13:09:55 Sending request on "wallets.demo1.rpc"
+13:09:55 Received with rtt 127.304505ms
+{"jsonrpc":"2.0","id":"zzlDZNRdMTqs","result":{"address":"89tnHwwTN3e6ffbG31C9tUdFhWFjZ5SX6XMz59j5BYmxaPfyXb2qanoSqpLeBrvPRSZT2kwCVTU2hentk7y9jBmKSt9HGVu"}}
+```
 
 ### wallet.account.createAddress
 
