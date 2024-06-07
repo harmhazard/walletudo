@@ -67,8 +67,11 @@ func (s *Service) Start(ctx context.Context) error {
 
 func (s *Service) handleRpc(c *bun.Context) error {
 	defer func() {
-		err := recover()
-		s.args.Logger.Error("rpc handler error", "err", err)
+		r := recover()
+		if r != nil {
+			s.args.Logger.Error("rpc handler error", "err", r)
+			return
+		}
 	}()
 
 	var req jsonrpc.Request
