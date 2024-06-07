@@ -28,6 +28,10 @@ func New(client *walletrpc.Client) jsonrpc.Module {
 				Name:    "setDaemon",
 				Handler: m.SetDaemon,
 			},
+			{
+				Name:    "relayTransaction",
+				Handler: m.RelayTransaction,
+			},
 		},
 	}
 }
@@ -156,4 +160,52 @@ func (m *module) ListAccounts(c *jsonrpc.Context) (any, error) {
 	}
 
 	return c.Result(res)
+}
+
+type RelayTransactionRequest struct {
+	TxMetadata string
+}
+
+func NewRelayTransactionRequest(params jsonrpc.Object) (RelayTransactionRequest, error) {
+	txMetadata, err := params.String("txMetadata")
+	if err != nil {
+		return RelayTransactionRequest{}, err
+	}
+
+	if txMetadata == "" {
+		err := jsonrpc.NewErrorParamObjectValue("txMetadata", "must not be empty")
+		return RelayTransactionRequest{}, err
+	}
+
+	return RelayTransactionRequest{
+		TxMetadata: txMetadata,
+	}, nil
+}
+
+type RelayTransactionResponse struct {
+	TxHash string `json:"txHash"`
+}
+
+func (m *module) RelayTransaction(c *jsonrpc.Context) (any, error) {
+	params, err := c.ParamsObject()
+	if err != nil {
+		return c.Error(err)
+	}
+
+	req, err := NewRelayTransactionRequest(params)
+	if err != nil {
+		return c.Error(err)
+	}
+
+	resp, err := m.client.RelayTx(c.Context(), &walletrpc.RelayTxRequest{
+		Hex: req.TxMetadata,
+	})
+	if err != nil {
+		// TODO: do not return monero rpc errors to the user!
+		return c.Error(err)
+	}
+
+	return RelayTransactionResponse{
+		TxHash: resp.TxHash,
+	}, nil
 }
