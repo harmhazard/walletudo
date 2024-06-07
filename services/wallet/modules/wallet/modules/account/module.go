@@ -28,6 +28,10 @@ func New(client *walletrpc.Client) jsonrpc.Module {
 				Name:    "listTransactions",
 				Handler: m.ListTransactions,
 			},
+			{
+				Name:    "getBalance",
+				Handler: m.GetBalance,
+			},
 		},
 	}
 }
@@ -326,4 +330,55 @@ func (m *module) ListTransactions(c *jsonrpc.Context) (any, error) {
 	}
 
 	return c.Result(res)
+}
+
+type GetBalanceRequest struct {
+	AccountID uint64
+}
+
+func NewGetBalanceRequest(params jsonrpc.Object) (GetBalanceRequest, error) {
+	accountID, err := params.Number("accountID")
+	if err != nil {
+		return GetBalanceRequest{}, err
+	}
+
+	if accountID.Int() <= 0 {
+		err := jsonrpc.NewErrorParamObjectValue("accountID", "must be greater than 0")
+		return GetBalanceRequest{}, err
+	}
+
+	return GetBalanceRequest{
+		// TODO: replace with Uint64 method
+		AccountID: uint64(accountID.Uint()),
+	}, nil
+}
+
+type GetBalanceResponse struct {
+	Balance         uint64 `json:"balance"`
+	UnlockedBalance uint64 `json:"unlocked_balance"`
+}
+
+func (m *module) GetBalance(c *jsonrpc.Context) (any, error) {
+	params, err := c.ParamsObject()
+	if err != nil {
+		return c.Error(err)
+	}
+
+	req, err := NewGetBalanceRequest(params)
+	if err != nil {
+		return c.Error(err)
+	}
+
+	resp, err := m.client.GetBalance(c.Context(), &walletrpc.GetBalanceRequest{
+		AccountIndex: req.AccountID,
+	})
+	if err != nil {
+		// TODO: do not return monero rpc errors to the user!
+		return c.Error(err)
+	}
+
+	return c.Result(GetBalanceResponse{
+		Balance:         resp.Balance,
+		UnlockedBalance: resp.UnlockedBalance,
+	})
 }
