@@ -131,7 +131,7 @@ func (m *module) ListAddresses(c *jsonrpc.Context) (any, error) {
 		return c.Error(err)
 	}
 
-	var res []ListAddressesResponse
+	res := make([]ListAddressesResponse, 0, len(resp.Addresses))
 	for _, addr := range resp.Addresses {
 		res = append(res, ListAddressesResponse{
 			Address: addr.Address,
