@@ -187,7 +187,6 @@ Array of Objects:
 |-----------|-----------|----------------------------------------------------------------------|
 | `address` | `string`  | Address.                                                             |
 | `label`   | `string`  | Address label.                                                       |
-| `balance` | `integer` | Address balance.                                                     |
 | `used`    | `boolean` | Set to `true` if the address has received a transaction. |
 
 #### Example
@@ -196,7 +195,7 @@ Array of Objects:
 $ nats -s "wss://user:password@example.com" request "wallets.demo1.rpc" '{"jsonrpc":"2.0","id":"zzlDZNRdMTqs","method":"wallet.account.listAddresses","params":{"accountID":7}}'
 13:21:08 Sending request on "wallets.demo1.rpc"
 13:21:08 Received with rtt 56.078476ms
-{"jsonrpc":"2.0","id":"zzlDZNRdMTqs","result":[{"address":"87LLdzd9mNUCjwCTpv8KVKNXv82nbi5kpJ2ujhdQmBQvDeVQfPbM1v5WdcxgCmhM1rF3C7a8tkLe7CoAH8U7KfHA17VGAak","label":"Test","balance":0,"used":false},{"address":"89tnHwwTN3e6ffbG31C9tUdFhWFjZ5SX6XMz59j5BYmxaPfyXb2qanoSqpLeBrvPRSZT2kwCVTU2hentk7y9jBmKSt9HGVu","label":"","balance":0,"used":false}]}
+{"jsonrpc":"2.0","id":"zzlDZNRdMTqs","result":[{"address":"87LLdzd9mNUCjwCTpv8KVKNXv82nbi5kpJ2ujhdQmBQvDeVQfPbM1v5WdcxgCmhM1rF3C7a8tkLe7CoAH8U7KfHA17VGAak","label":"Test","balance":0,"used":false},{"address":"89tnHwwTN3e6ffbG31C9tUdFhWFjZ5SX6XMz59j5BYmxaPfyXb2qanoSqpLeBrvPRSZT2kwCVTU2hentk7y9jBmKSt9HGVu","label":"","used":false}]}
 ```
 
 ### wallet.account.listTransactions

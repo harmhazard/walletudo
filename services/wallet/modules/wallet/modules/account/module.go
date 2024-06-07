@@ -112,7 +112,6 @@ func NewListAddressesRequest(params jsonrpc.Object) (ListAddressesRequest, error
 type ListAddressesResponse struct {
 	Address string `json:"address"`
 	Label   string `json:"label"`
-	Balance uint64 `json:"balance"`
 	Used    bool   `json:"used"`
 }
 
@@ -140,7 +139,6 @@ func (m *module) ListAddresses(c *jsonrpc.Context) (any, error) {
 		res = append(res, ListAddressesResponse{
 			Address: addr.Address,
 			Label:   addr.Label,
-			Balance: addr.Balance,
 			Used:    addr.Used,
 		})
 	}
