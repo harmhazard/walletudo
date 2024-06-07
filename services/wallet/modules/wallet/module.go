@@ -144,8 +144,8 @@ func (m *module) ListAccounts(c *jsonrpc.Context) (any, error) {
 		return c.Error(err)
 	}
 
-	var res []ListResponse
 	// The primary account is skipped because the service is intentionally not using it.
+	res := make([]ListResponse, 0, len(resp.SubaddressAccounts))
 	for i, acc := range resp.SubaddressAccounts[1:] {
 		res = append(res, ListResponse{
 			// TODO: there's a bug in walletrpc, account.AddressLabel is always 0
