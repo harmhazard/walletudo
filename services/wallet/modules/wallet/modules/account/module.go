@@ -32,6 +32,10 @@ func New(client *walletrpc.Client) jsonrpc.Module {
 				Name:    "getBalance",
 				Handler: m.GetBalance,
 			},
+			{
+				Name:    "createTransaction",
+				Handler: m.CreateTransaction,
+			},
 		},
 	}
 }
@@ -379,4 +383,91 @@ func (m *module) GetBalance(c *jsonrpc.Context) (any, error) {
 		Balance:         resp.Balance,
 		UnlockedBalance: resp.UnlockedBalance,
 	})
+}
+
+type CreateTransactionRequest struct {
+	AccountID uint64
+	Address   string
+	Amount    uint64
+}
+
+func NewCreateTransactionRequest(params jsonrpc.Object) (CreateTransactionRequest, error) {
+	accountID, err := params.Number("accountID")
+	if err != nil {
+		return CreateTransactionRequest{}, err
+	}
+
+	if accountID.Int() <= 0 {
+		err := jsonrpc.NewErrorParamObjectValue("accountID", "must be greater than 0")
+		return CreateTransactionRequest{}, err
+	}
+
+	address, err := params.String("address")
+	if err != nil {
+		return CreateTransactionRequest{}, err
+	}
+
+	if address == "" {
+		err := jsonrpc.NewErrorParamObjectValue("address", "must not be empty")
+		return CreateTransactionRequest{}, err
+	}
+
+	amount, err := params.Number("amount")
+	if err != nil {
+		return CreateTransactionRequest{}, err
+	}
+
+	if amount.Int() <= 0 {
+		err := jsonrpc.NewErrorParamObjectValue("amount", "must be greater than 0")
+		return CreateTransactionRequest{}, err
+	}
+
+	return CreateTransactionRequest{
+		AccountID: uint64(accountID.Uint()),
+		Address:   address,
+		// TODO: replace with Uint64 method
+		Amount: uint64(amount.Uint()),
+	}, nil
+}
+
+type CreateTransactionResponse struct {
+	Address    string `json:"address"`
+	Amount     uint64 `json:"amount"`
+	Fee        uint64 `json:"fee"`
+	TxMetadata string `json:"txMetadata"`
+}
+
+func (m *module) CreateTransaction(c *jsonrpc.Context) (any, error) {
+	params, err := c.ParamsObject()
+	if err != nil {
+		return c.Error(err)
+	}
+
+	req, err := NewCreateTransactionRequest(params)
+	if err != nil {
+		return c.Error(err)
+	}
+
+	resp, err := m.client.Transfer(c.Context(), &walletrpc.TransferRequest{
+		Destinations: []walletrpc.Destination{
+			{
+				Amount:  req.Amount,
+				Address: req.Address,
+			},
+		},
+		AccountIndex:  req.AccountID,
+		DoNotRelay:    true,
+		GetTxMetadata: true,
+	})
+	if err != nil {
+		// TODO: do not return monero rpc errors to the user!
+		return c.Error(err)
+	}
+
+	return CreateTransactionResponse{
+		Address:    req.Address,
+		Amount:     resp.Amount,
+		Fee:        resp.Fee,
+		TxMetadata: resp.TxMetadata,
+	}, nil
 }
