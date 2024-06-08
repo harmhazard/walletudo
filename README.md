@@ -1,16 +1,14 @@
 # Walletudo
 
-Walletudo is a Monero wallet server. The server provides a simple JSON-RPC protocol over [NATS](https://nats.io)
-for most common wallet interactions.
+> [!CAUTION]
+> This is very early stage software. Expect to lose your Monero if you use it!!!
 
-The main goal of this software is to provide a reasonably secure backend system to aid the development of lightweight
+Walletudo is a Monero wallet server. The server provides a simple JSON-RPC protocol over [NATS](https://nats.io)
+for most common wallet interactions. The main goal of this software is to provide a reasonably secure backend system to aid the development of lightweight
 wallets.
 
 This software was developed during [Monerokon](https://monerokon.org) hackathon that took place between 7th and 9th of
 June 2024 in Prague.
-
-> [!CAUTION]
-> This is very early stage software. Expect to lose your Monero if you use it!!!
 
 ## Installation
 
