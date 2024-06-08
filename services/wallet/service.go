@@ -16,11 +16,13 @@ type Arguments struct {
 	Subject         string
 	Servers         []string
 	WalletRpcServer string
+	WalletName      string
 }
 
 type Service struct {
-	args Arguments
-	rpc  *jsonrpc.Service
+	args   Arguments
+	client *walletrpc.Client
+	rpc    *jsonrpc.Service
 }
 
 func New(args Arguments) (*Service, error) {
@@ -35,14 +37,37 @@ func New(args Arguments) (*Service, error) {
 		return nil, err
 	}
 	return &Service{
-		args: args,
-		rpc:  rpc,
+		args:   args,
+		rpc:    rpc,
+		client: client,
 	}, nil
+}
+
+func (s *Service) initWallet(ctx context.Context, walletName string) error {
+	err := s.client.OpenWallet(ctx, &walletrpc.OpenWalletRequest{
+		Filename: walletName,
+	})
+	if err != nil {
+		err = s.client.CreateWallet(ctx, &walletrpc.CreateWalletRequest{
+			Filename: walletName,
+			Language: "English",
+		})
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (s *Service) Start(ctx context.Context) error {
 	s.args.Logger.Info("started service")
 	defer s.args.Logger.Info("stopped service")
+
+	err := s.initWallet(ctx, s.args.WalletName)
+	if err != nil {
+		s.args.Logger.Error("failed to initialize wallet", "error", err)
+		return err
+	}
 
 	b := bun.New(bun.Arguments{
 		Name:    s.args.Name,

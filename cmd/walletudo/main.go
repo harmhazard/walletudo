@@ -23,6 +23,7 @@ func main() {
 			Subject:         conf.NatsRpcSubject(),
 			Servers:         conf.NatsServer(),
 			WalletRpcServer: conf.WalletRpcServer(),
+			WalletName:      conf.WalletName(),
 		},
 	})
 

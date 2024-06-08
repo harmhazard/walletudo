@@ -18,6 +18,7 @@ type Config struct {
 	natsServer      []string
 	natsRpcSubject  string
 	walletRpcServer string
+	walletName      string
 	logLevel        *slog.Level
 }
 
@@ -45,6 +46,11 @@ func (c *Config) Flags() []Flag {
 			Func:  c.setWalletRpcServer,
 		},
 		{
+			Name:  "wallet-name",
+			Usage: "=<NAME>\t\tname of Monero Wallet",
+			Func:  c.setWalletName,
+		},
+		{
 			Name:  "log-level",
 			Usage: "=<LEVEL>\t\tlog verbosity level",
 			Func:  c.setLogLevel,
@@ -64,6 +70,11 @@ func (c *Config) setNatsRpcSubject(s string) error {
 
 func (c *Config) setWalletRpcServer(s string) error {
 	c.walletRpcServer = s
+	return nil
+}
+
+func (c *Config) setWalletName(s string) error {
+	c.walletName = s
 	return nil
 }
 
@@ -96,6 +107,14 @@ func (c *Config) WalletRpcServer() string {
 		return defaultValue
 	}
 	return c.walletRpcServer
+}
+
+func (c *Config) WalletName() string {
+	defaultValue := "wallet"
+	if c.walletName == "" {
+		return defaultValue
+	}
+	return c.walletName
 }
 
 func (c *Config) LogLevel() slog.Level {

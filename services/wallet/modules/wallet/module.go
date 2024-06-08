@@ -17,10 +17,6 @@ func New(client *walletrpc.Client) jsonrpc.Module {
 		},
 		Methods: []jsonrpc.Method{
 			{
-				Name:    "init",
-				Handler: m.Init,
-			},
-			{
 				Name:    "listAccounts",
 				Handler: m.ListAccounts,
 			},
@@ -38,56 +34,6 @@ func New(client *walletrpc.Client) jsonrpc.Module {
 
 type module struct {
 	client *walletrpc.Client
-}
-
-type InitRequest struct {
-	Filename string
-}
-
-func NewInitRequest(params jsonrpc.Object) (InitRequest, error) {
-	filename, err := params.String("filename")
-	if err != nil {
-		return InitRequest{}, err
-	}
-
-	if filename == "" {
-		err := jsonrpc.NewErrorParamObjectValue("filename", "empty value")
-		return InitRequest{}, err
-	}
-
-	return InitRequest{
-		Filename: filename,
-	}, nil
-}
-
-type InitResponse struct{}
-
-func (m *module) Init(c *jsonrpc.Context) (any, error) {
-	params, err := c.ParamsObject()
-	if err != nil {
-		return c.Error(err)
-	}
-
-	req, err := NewInitRequest(params)
-	if err != nil {
-		return c.Error(err)
-	}
-
-	err = m.client.OpenWallet(c.Context(), &walletrpc.OpenWalletRequest{
-		Filename: req.Filename,
-	})
-	if err != nil {
-		err = m.client.CreateWallet(c.Context(), &walletrpc.CreateWalletRequest{
-			Filename: req.Filename,
-			Language: "English",
-		})
-		if err != nil {
-			// TODO: do not return monero rpc errors to the user!
-			return c.Error(err)
-		}
-	}
-
-	return c.Result(InitResponse{})
 }
 
 type SetDaemonRequest struct {

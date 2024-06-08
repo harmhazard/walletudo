@@ -2,33 +2,6 @@
 
 ## Requests
 
-### wallet.init
-
-Create a new wallet or open an existing.
-
-#### Parameters
-
-| Name        | Type    | Required                                          | Description                                       |
-|-------------|---------|---------------------------------------------------|---------------------------------------------------|
-| `filename` | `string` | yes        | Filename of the wallet that will be created/open. |
-
-#### Returns
-
-Empty Object.
-
-#### Errors
-
-TODO
-
-#### Example
-
-```shell
-$ nats request -s wss://user:password@example.com --reply-timeout 10s "wallets.demo1.rpc" '{"jsonrpc":"2.0","id":"zzlDZNRdMTqs","method":"wallet.init","params":{"filename":"mywallet"}}'
-11:37:33 Sending request on "wallets.demo1.rpc"
-11:37:37 Received with rtt 4.43974031s
-{"jsonrpc":"2.0","id":"zzlDZNRdMTqs","result":{}}
-```
-
 ### wallet.backup [NOT IMPLEMENTED]
 
 ### wallet.restore [NOT IMPLEMENTED]

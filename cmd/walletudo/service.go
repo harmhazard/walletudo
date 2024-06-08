@@ -8,7 +8,8 @@ import (
 )
 
 type Arguments struct {
-	Logger     *slog.Logger
+	Logger *slog.Logger
+	// TODO: rename to Wallet
 	WalletArgs wallet.Arguments
 }
 
@@ -34,6 +35,7 @@ func (s *Service) Start(ctx context.Context) error {
 			Subject:         s.args.WalletArgs.Subject,
 			Servers:         s.args.WalletArgs.Servers,
 			WalletRpcServer: s.args.WalletArgs.WalletRpcServer,
+			WalletName:      s.args.WalletArgs.WalletName,
 		})
 		if err != nil {
 			return err
