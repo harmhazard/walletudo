@@ -2,6 +2,34 @@
 
 ## Requests
 
+### $rpc.discover
+
+Service discovery method. This is inspired by OpenRPC but not compliant with the specification.
+
+#### Parameters
+
+Empty Object.
+
+#### Returns
+
+Object
+
+| Name   | Type   | Description                            |
+|--------|--------|----------------------------------------|
+| `info` | `Info` | Object containing service information. |
+
+Info
+
+| Name          | Type     | Description                     |
+|---------------|----------|---------------------------------|
+| `title`       | `string` | The title of the application.   |
+| `description` | `string` | Description of the application. |
+| `version`     | `string` | Version of the application.     |
+
+#### Examples
+
+TODO
+
 ### wallet.backup [NOT IMPLEMENTED]
 
 ### wallet.restore [NOT IMPLEMENTED]
@@ -12,7 +40,7 @@ List wallet accounts.
 
 #### Parameters
 
-The method takes no parameters.
+Empty Object
 
 #### Returns
 
