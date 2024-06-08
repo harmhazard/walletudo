@@ -3,14 +3,14 @@
 Walletudo is a Monero wallet server. The service provides a simple JSON-RPC protocol over [NATS](https://nats.io)
 for most common wallet interactions.
 
-> [!CAUTION]
-> This is very early stage software, expect to lose your Monero if you use it!
-
 This software was developed during [Monerokon](https://monerokon.org) hackathon that took place between 7th - 9th of July 2024 in Prague.
+
+> [!CAUTION]
+> This is very early stage software. Expect to lose your Monero if you use it!!!
 
 ## Installation
 
-```go
+```bash
 $ go install github.com/harmhazard/walletudo@latest
 ```
 
