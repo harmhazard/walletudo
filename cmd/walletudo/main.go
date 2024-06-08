@@ -18,12 +18,13 @@ func main() {
 	s := New(Arguments{
 		Logger: logger.With(slog.String("service", "walletudo")),
 		Wallet: wallet.Arguments{
-			Logger:          logger.With(slog.String("service", "wallet")),
-			Name:            "walletudo-wallet",
-			Subject:         conf.NatsRpcSubject(),
-			Servers:         conf.NatsServer(),
-			WalletRpcServer: conf.WalletRpcServer(),
-			WalletName:      conf.WalletName(),
+			Logger:           logger.With(slog.String("service", "wallet")),
+			Name:             "walletudo-wallet",
+			Subject:          conf.NatsRpcSubject(),
+			SubjectDiscovery: conf.NatsDiscoverySubject(),
+			Servers:          conf.NatsServer(),
+			WalletRpcServer:  conf.WalletRpcServer(),
+			WalletName:       conf.WalletName(),
 		},
 	})
 

@@ -15,11 +15,12 @@ import (
 // --help
 
 type Config struct {
-	natsServer      []string
-	natsRpcSubject  string
-	walletRpcServer string
-	walletName      string
-	logLevel        *slog.Level
+	natsServer           []string
+	natsRpcSubject       string
+	natsDiscoverySubject string
+	walletRpcServer      string
+	walletName           string
+	logLevel             *slog.Level
 }
 
 type Flag struct {
@@ -37,8 +38,13 @@ func (c *Config) Flags() []Flag {
 		},
 		{
 			Name:  "nats-rpc-subject",
-			Usage: "=<NAME>\tname of NATS JSON-RPC subject",
+			Usage: "=<NAME>\tname of JSON-RPC subject",
 			Func:  c.setNatsRpcSubject,
+		},
+		{
+			Name:  "nats-discovery-subject",
+			Usage: "=<NAME>\tname of service discovery subject",
+			Func:  c.setNatsDiscoverySubject,
 		},
 		{
 			Name:  "wallet-rpc-server",
@@ -65,6 +71,10 @@ func (c *Config) setNatsServer(s string) error {
 
 func (c *Config) setNatsRpcSubject(s string) error {
 	c.natsRpcSubject = s
+	return nil
+}
+func (c *Config) setNatsDiscoverySubject(s string) error {
+	c.natsDiscoverySubject = s
 	return nil
 }
 
@@ -99,6 +109,13 @@ func (c *Config) NatsRpcSubject() string {
 		return defaultValue
 	}
 	return c.natsRpcSubject
+}
+func (c *Config) NatsDiscoverySubject() string {
+	defaultValue := "walletudo.discover"
+	if c.natsDiscoverySubject == "" {
+		return defaultValue
+	}
+	return c.natsDiscoverySubject
 }
 
 func (c *Config) WalletRpcServer() string {

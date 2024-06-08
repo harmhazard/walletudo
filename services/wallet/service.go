@@ -11,12 +11,13 @@ import (
 )
 
 type Arguments struct {
-	Logger          *slog.Logger
-	Name            string
-	Subject         string
-	Servers         []string
-	WalletRpcServer string
-	WalletName      string
+	Logger           *slog.Logger
+	Name             string
+	Subject          string
+	SubjectDiscovery string
+	Servers          []string
+	WalletRpcServer  string
+	WalletName       string
 }
 
 type Service struct {
@@ -87,6 +88,7 @@ func (s *Service) Start(ctx context.Context) error {
 		s.args.Logger.Info("disconnected from nats server")
 	}
 	b.Subscribe(s.args.Subject, s.handleRpc)
+	b.Subscribe(s.args.SubjectDiscovery, s.handleDiscovery)
 	return b.Start(ctx)
 }
 
@@ -121,4 +123,16 @@ func (s *Service) handleRpc(c *bun.Context) error {
 	}
 
 	return c.JSON(resp)
+}
+
+func (s *Service) handleDiscovery(c *bun.Context) error {
+	defer func() {
+		r := recover()
+		if r != nil {
+			s.args.Logger.Error("service discovery handler error", "err", r)
+			return
+		}
+	}()
+
+	return c.String(s.args.Subject)
 }
