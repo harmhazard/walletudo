@@ -9,8 +9,7 @@ import (
 
 type Arguments struct {
 	Logger *slog.Logger
-	// TODO: rename to Wallet
-	WalletArgs wallet.Arguments
+	Wallet wallet.Arguments
 }
 
 type Service struct {
@@ -30,12 +29,12 @@ func (s *Service) Start(ctx context.Context) error {
 	group, groupCtx := errgroup.WithContext(ctx)
 	group.Go(func() error {
 		ws, err := wallet.New(wallet.Arguments{
-			Logger:          s.args.WalletArgs.Logger,
-			Name:            s.args.WalletArgs.Name,
-			Subject:         s.args.WalletArgs.Subject,
-			Servers:         s.args.WalletArgs.Servers,
-			WalletRpcServer: s.args.WalletArgs.WalletRpcServer,
-			WalletName:      s.args.WalletArgs.WalletName,
+			Logger:          s.args.Wallet.Logger,
+			Name:            s.args.Wallet.Name,
+			Subject:         s.args.Wallet.Subject,
+			Servers:         s.args.Wallet.Servers,
+			WalletRpcServer: s.args.Wallet.WalletRpcServer,
+			WalletName:      s.args.Wallet.WalletName,
 		})
 		if err != nil {
 			return err

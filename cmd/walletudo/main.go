@@ -17,7 +17,7 @@ func main() {
 
 	s := New(Arguments{
 		Logger: logger.With(slog.String("service", "walletudo")),
-		WalletArgs: wallet.Arguments{
+		Wallet: wallet.Arguments{
 			Logger:          logger.With(slog.String("service", "wallet")),
 			Name:            "walletudo-wallet",
 			Subject:         conf.NatsRpcSubject(),
