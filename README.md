@@ -38,5 +38,5 @@ The only component that must be addressable is the NATS server itself.
 
 ## Documentation
 
-[Service Discovery](docs/ServiceDiscovery.md)
-[Wallet JSON-RPC API](docs/WalletAPI.md)
+* [Service Discovery](docs/ServiceDiscovery.md)
+* [Wallet JSON-RPC API](docs/WalletAPI.md)
