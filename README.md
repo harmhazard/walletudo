@@ -5,7 +5,20 @@
 
 Walletudo is a Monero wallet server. The server provides a simple JSON-RPC protocol over [NATS](https://nats.io)
 for most common wallet interactions. The main goal of this software is to provide a reasonably secure backend system to aid the development of lightweight
-wallets.
+wallets for personal and ecommerce use.
+
+### Features
+
+* Manage accounts.
+* Send and receive Monero.
+* Receive transaction notifications.
+
+### Feature wishlist
+
+* User privileges and shared accounts.
+* Create invoices.
+* Receive payment notifications.
+* Issue refunds.
 
 This software was developed during [Monerokon](https://monerokon.org) hackathon that took place between 7th and 9th of
 June 2024 in Prague.
