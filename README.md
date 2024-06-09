@@ -12,8 +12,19 @@ June 2024 in Prague.
 
 ## Installation
 
+Build from source:
+
 ```bash
 $ go install github.com/harmhazard/walletudo@latest
+```
+
+## Usage
+
+```bash
+$ git clone https://github.com/harmhazard/walletudo
+$ cd walletudo/
+$ docker-compose up --detach # Be cool and use podman!
+$ walletudo --nats-server=wss://user:password@connect.walletudo.com --nats-rpc-subject=wallets.demo1.rpc --nats-discovery-subject "wallets.discover"
 ```
 
 ## Deployment architecture
@@ -27,4 +38,5 @@ The only component that must be addressable is the NATS server itself.
 
 ## Documentation
 
-[Wallet JSON-RPC API](WalletApi.md)
+[Service Discovery](docs/ServiceDiscovery.md)
+[Wallet JSON-RPC API](docs/WalletAPI.md)
